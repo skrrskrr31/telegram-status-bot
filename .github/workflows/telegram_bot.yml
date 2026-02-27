@@ -1,0 +1,26 @@
+name: Telegram Status Bot
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # Her 5 dakikada bir
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          GH_TOKEN:           ${{ secrets.GH_TOKEN }}
+        run: python telegram_bot.py
